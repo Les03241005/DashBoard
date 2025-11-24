@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Dashboard de Ventas - Moda Neon</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        background: #000010;
+        color: #fff;
+    }
+
+    header {
+        padding: 20px;
+        text-align: center;
+        background: #0a0020;
+        border-bottom: 2px solid #8a00ff;
+        box-shadow: 0 0 15px #8a00ff;
+    }
+
+    h1 {
+        color: #ff004c;
+        text-shadow: 0 0 12px #ff004c;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .chart-box {
+        margin-bottom: 40px;
+        background: #000018;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px #0047ff;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        background: #000016;
+        box-shadow: 0 0 20px #8a00ff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th {
+        background: #8a00ff;
+        color: #fff;
+        padding: 12px;
+        text-shadow: 0 0 8px #ff00f7;
+    }
+
+    td {
+        padding: 10px;
+        border-bottom: 1px solid #222;
+    }
+
+    tr:hover {
+        background: rgba(255, 0, 80, 0.2);
+    }
+</style>
+</head>
+
+<body>
+<header>
+    <h1>Dashboard de Ventas - Moda Neón</h1>
+</header>
+
+<div class="container">
+    <div class="chart-box">
+        <canvas id="ventasChart"></canvas>
+    </div>
+
+    <h2 style="color:#8a00ff;text-shadow:0 0 12px #8a00ff;">Tabla de Datos</h2>
+    <table id="ventasTable">
+        <thead>
+            <tr>
+                <th>Mes</th>
+                <th>Luna Seda</th>
+                <th>Urban Fit</th>
+                <th>Noir Street</th>
+                <th>Eterno Floral</th>
+                <th>CloudComfort</th>
+                <th>Aurea Mini Bag</th>
+                <th>Solar Classic</th>
+                <th>Perla Aurora</th>
+                <th>SkyFlex Runner</th>
+                <th>Desert Breeze</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+// ===============================
+// DATASET DE VENTAS (UNIDADES)
+// ===============================
+const meses = [
+    "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
+];
+
+const ventas = {
+    "Luna Seda":        [120,130,150,160,180,200,190,180,160,150,140,180],
+    "Urban Fit":        [100,110,130,140,150,160,170,160,150,140,130,160],
+    "Noir Street":      [40,45,50,55,60,65,70,65,60,55,50,75],
+    "Eterno Floral":    [80,90,100,120,150,170,160,150,140,130,120,180],
+    "CloudComfort":     [110,120,130,140,150,160,170,160,150,140,130,160],
+    "Aurea Mini Bag":   [60,70,80,90,100,110,120,115,105,100,95,130],
+    "Solar Classic":    [90,100,120,130,140,150,160,150,140,130,120,180],
+    "Perla Aurora":     [150,160,180,190,200,210,200,190,180,170,160,220],
+    "SkyFlex Runner":   [70,80,90,110,130,150,160,150,140,130,120,170],
+    "Desert Breeze":    [130,140,150,160,180,200,220,210,190,180,170,200]
+};
+
+// =======================================
+// RELLENAR TABLA DINÁMICAMENTE
+// =======================================
+const tbody = document.querySelector("#ventasTable tbody");
+
+meses.forEach((mes, i) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${mes}</td>
+        <td>${ventas["Luna Seda"][i]}</td>
+        <td>${ventas["Urban Fit"][i]}</td>
+        <td>${ventas["Noir Street"][i]}</td>
+        <td>${ventas["Eterno Floral"][i]}</td>
+        <td>${ventas["CloudComfort"][i]}</td>
+        <td>${ventas["Aurea Mini Bag"][i]}</td>
+        <td>${ventas["Solar Classic"][i]}</td>
+        <td>${ventas["Perla Aurora"][i]}</td>
+        <td>${ventas["SkyFlex Runner"][i]}</td>
+        <td>${ventas["Desert Breeze"][i]}</td>
+    `;
+    tbody.appendChild(row);
+});
+
+// =======================================
+// GRÁFICO (Chart.js)
+// =======================================
+const ctx = document.getElementById("ventasChart");
+
+new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: meses,
+        datasets: [
+            {
+                label: "Luna Seda",
+                data: ventas["Luna Seda"],
+                borderColor: "#ff004c",
+                borderWidth: 3,
+                tension: 0.3
+            },
+            {
+                label: "Urban Fit",
+                data: ventas["Urban Fit"],
+                borderColor: "#0047ff",
+                borderWidth: 3,
+                tension: 0.3
+            },
+            {
+                label: "Noir Street",
+                data: ventas["Noir Street"],
+                borderColor: "#8a00ff",
+                borderWidth: 3,
+                tension: 0.3
+            },
+            {
+                label: "SkyFlex Runner",
+                data: ventas["SkyFlex Runner"],
+                borderColor: "#ff00f7",
+                borderWidth: 3,
+                tension: 0.3
+            }
+        ]
+    },
+    options: {
+        plugins: {
+            legend: { labels: { color: "#fff" } }
+        },
+        scales: {
+            x: { ticks: { color: "#fff" } },
+            y: { ticks: { color: "#fff" } }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
